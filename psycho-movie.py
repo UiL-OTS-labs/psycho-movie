@@ -8,7 +8,6 @@ import sys
 import os.path
 
 import uilutils.message as um
-import movie
 
 refresh_rate = -1
 
@@ -33,19 +32,24 @@ def parse_cmd():
     ''' Parses command line returns the parsed arguments
     '''
     descr   = (
-        "This is a small utility that demonstrates using video's "
-        "with psychopy. It might use a bit of more work to actually "
-        "show a window, but this basically gets the job done."
+        "This is a program intended to run a small experiment. In the first " 
+        "part of the experiment a few movies are displayed follow by "
+        "true/false questions. In the second part a user views a picture "
+        "from a movie and sees the answer provided by him/herself. Than the " 
+        "participant answers a how sure he/she is about the statement"
         )
     epilog  = "Have fun using this utility!"
-    mhelpstr= "Filename of the movie to display."
     whelpstr= ("an integer from the set [0,n) where n is the number of "
               "displays/monitors are connected.")
+    dhelpstr= ("A flag useful while testing the program. This "
+               "flag shouldn't be used while running the experiment"
+              )
     progname = os.path.basename(sys.argv[0])
 
     parser = argparse.ArgumentParser(prog=progname, description=descr,
         epilog=epilog)
     parser.add_argument("-w", "--window", type=int, help=whelpstr, default=0)
+    parser.add_argument("-d", "--debug", action="store_true", help=dhelpstr)
 
     return parser.parse_args()
 
