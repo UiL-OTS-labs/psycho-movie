@@ -21,16 +21,16 @@ welcome = ("Dear participant, welcome to this experiment.\n"
            "Press the space bar to continue"
            )
 
-question1 = ("Did the woman crash into\n"
+statement1 = ("The woman crashed into\n"
              "the poor bloke?")
-question2 = ("Which python book was standing on the shelf?")
+statement2 = ("There was a python book standing on the shelf")
 
 movie_stims1 = [
-    MovieParameters("Collide_Joint.mp4", question1, 1),
-    MovieParameters("Text_Joint_V3.mp4", question2, 2)
+    MovieParameters("Collide_Joint.mp4", statement1, 1),
+    MovieParameters("Text_Joint_V3.mp4", statement2, 2)
 ]
 
 movie_stims2 = [
-    MovieParameters("Collide_Joint.mp4", question1, 1),
-    MovieParameters("Text_Joint_V3.mp4", question2, 2)
+    MovieParameters("Collide_Joint.mp4", statement1, 1),
+    MovieParameters("Text_Joint_V3.mp4", statement2, 2)
 ]
