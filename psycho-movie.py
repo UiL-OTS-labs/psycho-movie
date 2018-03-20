@@ -11,7 +11,6 @@ import stimuli
 import uilutils.message as um
 from uilutils.colors import *
 
-refresh_rate = -1
 
 def run_experiment(args):
     '''Opens a window and runs the experiment'''
@@ -49,13 +48,8 @@ def run_experiment(args):
         )
     mesg.present()
 
-    moviepart.run_movie_part(win, moviestims)
-
-#    for filename in args.movie:
-#        moviestim = visual.MovieStim2(win, filename)
-#        while moviestim.status != visual.FINISHED:
-#            moviestim.draw()
-#            win.flip(True)
+    answers = moviepart.run_movie_part(win, moviestims)
+    questionpart.run_questions(win, answers)
 
 def parse_cmd():
     ''' Parses command line returns the parsed arguments
