@@ -46,4 +46,6 @@ class Message(visual.TextStim):
             for i in keys:
                 if i in self.term_keys or i in self.term_special_keys:
                     stop = True
-        self.terminator = event
+            if stop:
+               self.terminator = keys
+        return self.terminator

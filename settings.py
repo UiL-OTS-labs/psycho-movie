@@ -2,3 +2,4 @@
 '''
 
 DEBUG=False
+STIMDIR="stimuli/"
