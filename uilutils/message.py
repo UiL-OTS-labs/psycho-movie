@@ -26,25 +26,26 @@ class Message(visual.TextStim):
         @param term_keys a string with keys that terminate the stimulus
         @param term_special_keys use the constants for the keys from the
                constants modulet
-        @return a tuple with the terminating button and time
+        @return a tuple with the terminating button and timestamp
         '''
         self.term_keys          = term_keys
         self.term_special_keys  = term_special_keys
-
-        self.draw()
-        self.win.flip(True)
 
         stop = False
         while not stop:
             # Draw window (in loop because otherwise drawing artifacts occur
             # when another overlaps the psychopy window. (it won't be refresed.)
-            keys = event.waitKeys()
-            print (keys)
+            self.draw()
+            self.win.flip(True)
+
+            keys = event.getKeys(timeStamped=True)
             if not keys:
                 continue
-            for i in keys:
-                if i in self.term_keys or i in self.term_special_keys:
+            for key, timestamp in keys:
+                if key in self.term_keys or key in self.term_special_keys:
                     stop = True
-            if stop:
-               self.terminator = keys
-        return self.terminator
+                    self.time = timestamp
+                    self.terminator = key
+                    break
+
+        return self.terminator, self.timestamp
