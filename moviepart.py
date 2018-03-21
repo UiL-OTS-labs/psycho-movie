@@ -19,23 +19,28 @@ def run_movie_part(window, stims):
     This function returns a 
     '''
     responses = dict()
-    TRUERESP = "t"
-    FALSERESP = "f"
-    validresp = [TRUERESP, FALSERESP]
+    TRUE_RESP = ["t", "lshift"]
+    FALSE_RESP = ["f", "rshift"]
+    valid_resp = [TRUE_RESP[0], FALSE_RESP[0]]
+    valid_special_resp = [TRUE_RESP[1], FALSE_RESP[1]]
 
     for params in stims:
         moviefn = params.filename
         questiontxt = params.question
         waitforpp = um.Message(window, text=stimuli.waitmsg, color=BLACK)
-        waitforpp.present()
-        
         question = um.Message(window, text=questiontxt, color=BLACK)
+        waitforpp.present()
 
-        present_movie(window, moviefn)
-        keys, = question.present(term_keys=validresp, term_special_keys=[])
-        if keys == TRUERESP:
+        #present_movie(window, moviefn)
+
+        keys, = question.present(
+            term_keys=valid_resp,
+            term_special_keys=valid_special_resp
+            )
+
+        if keys in TRUE_RESP:
             responses[params.id] = True
-        elif keys == FALSERESP:
+        elif keys in FALSE_RESP:
             responses[params.id] = False
         else:
             raise RuntimeError(
