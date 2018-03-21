@@ -1,5 +1,6 @@
 
 from psychopy import visual, event
+from constants import *
 
 class Message(visual.TextStim):
     '''Simple wrapper around a text stimulus
@@ -9,14 +10,6 @@ class Message(visual.TextStim):
     simply present a text stimulus that waits for user input.
     '''
 
-    SPACE   = "space"
-    LSHIFT  = "lshift"
-    RSHIFT  = "rshift"
-    LCTRL   = "lctrl"
-    RCTRL   = "rctrl"
-    ENTER   = "return"
-    RETURN  = ENTER
-    ESC     = "escape"
     
     def __init__(self, win, *args, **kwargs):
         super(Message, self).__init__(win, *args, **kwargs)
@@ -31,18 +24,24 @@ class Message(visual.TextStim):
         @param duration time smaller that zero makes the time being ignored
                a value larger than time makes the stimulus ### TODO ###
         @param term_keys a string with keys that terminate the stimulus
-        @param term_special_keys a list of special keys use the constants from
-               this class like SPACE, LSHIFT etc
+        @param term_special_keys use the constants for the keys from the
+               constants modulet
         @return a tuple with the terminating button and time
         '''
         self.term_keys          = term_keys
         self.term_special_keys  = term_special_keys
+
         self.draw()
         self.win.flip(True)
+
         stop = False
         while not stop:
+            # Draw window (in loop because otherwise drawing artifacts occur
+            # when another overlaps the psychopy window. (it won't be refresed.)
             keys = event.waitKeys()
             print (keys)
+            if not keys:
+                continue
             for i in keys:
                 if i in self.term_keys or i in self.term_special_keys:
                     stop = True
