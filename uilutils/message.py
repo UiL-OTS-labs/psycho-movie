@@ -25,7 +25,7 @@ class Message(visual.TextStim):
                a value larger than time makes the stimulus ### TODO ###
         @param term_keys a string with keys that terminate the stimulus
         @param term_special_keys use the constants for the keys from the
-               constants modulet
+               constants module
         @return a tuple with the terminating button and timestamp
         '''
         self.term_keys          = term_keys
