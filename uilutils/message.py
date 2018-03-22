@@ -18,7 +18,7 @@ class Message(visual.TextStim):
         self.time = None
         self.terminator = None
 
-    def present(self, dur=-1, term_keys="q", term_special_keys=[SPACE]):
+    def present(self, dur=-1, term_keys="", term_special_keys=[SPACE]):
         '''
         Presents the stimulus until the current time is larger
         @param duration time smaller that zero makes the time being ignored
