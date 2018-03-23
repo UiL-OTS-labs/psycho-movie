@@ -1,6 +1,8 @@
 
 class MovieParameters(object):
-    ''' Contains the required parameters for a movie + question stimulus.'''
+    '''Contains the required parameters for a movie + question stimulus.
+
+    '''
     def __init__(self, filename, question, id):
         '''Init MovieParameters instance'''
         self.filename = filename
@@ -22,15 +24,17 @@ welcome = ("Dear participant, welcome to this experiment.\n"
            )
 
 statement1 = ("The woman crashed into\n"
-             "the poor bloke?")
+              "the poor bloke.")
 statement2 = ("There was a python book standing on the shelf")
 
+#parameters for experimental group 1
 movie_stims1 = [
     MovieParameters("Collide_Joint.mp4", statement1, 1),
     MovieParameters("Text_Joint_V3.mp4", statement2, 2)
 ]
 
+#parameters for experimental group 2
 movie_stims2 = [
-    MovieParameters("Collide_Joint.mp4", statement1, 1),
-    MovieParameters("Text_Joint_V3.mp4", statement2, 2)
+    MovieParameters("Text_Joint_V3.mp4", statement2, 2),
+    MovieParameters("Collide_Joint.mp4", statement1, 1)
 ]
