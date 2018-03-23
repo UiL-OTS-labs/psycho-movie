@@ -34,9 +34,6 @@ def run_movie_part(window, stims):
             color=BLACK,
             height=constants.DEF_FONTSIZE
             )
-        print("Message = ", waitforpp)
-        sz = list(waitforpp.getSize())
-        print("Message size = ", sz)
         question = um.Message(
             window,
             text=questiontxt,
