@@ -157,13 +157,15 @@ class Question(object):
 
             self.answers.append(stim)
 
-    def present(self, dur=-1, term_keys="", term_special_keys=[]):
+    def present(self, dur=-1):
         '''Presents the stimuli/question
 
         NOTE: Make sure set_answer_options is called before this function
         is called, otherwise the participant has no way to terminate this
         stimulus.
-        returns the terminating key and the timestamp
+
+        NOTE II : the duration parameter is currently ignored.
+        Returns the chosen value and the time stamp.
         '''
         stop = False
         index = -1
@@ -200,4 +202,4 @@ class Question(object):
             self.value = None
 
         return self.value, self.time
-            
+
