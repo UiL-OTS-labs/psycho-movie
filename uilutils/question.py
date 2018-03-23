@@ -60,7 +60,6 @@ class Question(object):
             self._position_prompt()
         if self.answers:
             self._position_answers()
-            for i in self.answers:
 
     def _position_widget(self):
         '''Position the widget in the middle of upper half of the window.'''
