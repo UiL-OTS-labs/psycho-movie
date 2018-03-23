@@ -3,6 +3,7 @@ from psychopy import visual
 import stimuli
 import settings
 import uilutils.message as um
+from uilutils import constants
 from uilutils.colors import *
 
 def present_movie(window, filename, stimdir=settings.STIMDIR):
@@ -27,8 +28,21 @@ def run_movie_part(window, stims):
     for params in stims:
         moviefn = params.filename
         questiontxt = params.question
-        waitforpp = um.Message(window, text=stimuli.waitmsg, color=BLACK)
-        question = um.Message(window, text=questiontxt, color=BLACK)
+        waitforpp = um.Message(
+            window,
+            text=stimuli.waitmsg,
+            color=BLACK,
+            height=constants.DEF_FONTSIZE
+            )
+        print("Message = ", waitforpp)
+        sz = list(waitforpp.getSize())
+        print("Message size = ", sz)
+        question = um.Message(
+            window,
+            text=questiontxt,
+            color=BLACK,
+            height=constants.DEF_FONTSIZE
+            )
         waitforpp.present()
 
         #present_movie(window, moviefn)
@@ -44,7 +58,7 @@ def run_movie_part(window, stims):
             responses[params.id] = False
         else:
             raise RuntimeError(
-                "There is a bug in this experiment, please show this",
+                "There is a bug in this experiment, please show this "
                 "To the technicians"
                 )
     return responses

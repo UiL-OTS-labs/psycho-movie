@@ -12,3 +12,6 @@ ENTER   = "return"
 RETURN  = ENTER
 ESC     = "escape"
 
+
+#constants for fontsize
+DEF_FONTSIZE = 24
