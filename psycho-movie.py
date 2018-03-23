@@ -1,15 +1,16 @@
 #!/usr/bin/env python2
+from __future__ import print_function
 
 # requires python-opencv for MovieStim2
-
 from psychopy import visual, core
 import argparse
 import sys
 import os.path
 import moviepart
 import stimuli
-import uilutils.message as um
-from uilutils.colors import *
+import uilutils.message  as um
+from uilutils.colors import *       # color constants
+from uilutils.constants import *    # General constants.
 
 
 def run_experiment(args):
@@ -42,10 +43,11 @@ def run_experiment(args):
     mesg = um.Message(
         win,
         text=stimuli.welcome,
-        height=24,
+        height=DEF_FONTSIZE,
         wrapWidth=800,
         color=BLACK
         )
+
     mesg.present()
 
     answers = moviepart.run_movie_part(win, moviestims)
@@ -54,7 +56,7 @@ def run_experiment(args):
 def parse_cmd():
     ''' Parses command line returns the parsed arguments
     '''
-    descr   = (
+    descr = (
         "This is a program intended to run a small experiment. In the first " 
         "part of the experiment a few movies are displayed follow by "
         "true/false questions. In the second part a user views a picture "
@@ -75,7 +77,7 @@ def parse_cmd():
         epilog=epilog)
     parser.add_argument("-w", "--window", type=int, help=whelpstr, default=1)
     parser.add_argument("group", type=int, help=ghelpstr)
-    parser.add_argument("participant_id", type=int, help=phelpstr)
+    parser.add_argument("participant_id", type=str, help=phelpstr)
     parser.add_argument("-d", "--debug", action="store_true", help=dhelpstr)
 
     return parser.parse_args()
