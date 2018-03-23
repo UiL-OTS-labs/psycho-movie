@@ -48,4 +48,4 @@ class Message(visual.TextStim):
                     self.terminator = key
                     break
 
-        return self.terminator, self.timestamp
+        return self.terminator, self.time
