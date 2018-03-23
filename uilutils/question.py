@@ -58,11 +58,9 @@ class Question(object):
             self._position_widget()
         if self.prompt:
             self._position_prompt()
-            print("prompt pos = ", self.prompt.pos)
         if self.answers:
             self._position_answers()
             for i in self.answers:
-                print("widget pos = ", i.pos)
 
     def _position_widget(self):
         '''Position the widget in the middle of upper half of the window.'''
@@ -76,11 +74,11 @@ class Question(object):
         step = 1
         winwidth, winheight = tuple(self.window.size)
         if self.widget:
-            downward_step = -winheight/2.0/3.0
-            self.prompt.pos = [self.ORIGIN, step * downward_step]
+            downward_step = winheight/2.0/3.0
+            self.prompt.pos = [self.ORIGIN, self.ORIGIN - step * downward_step]
         else:
-            downward_step = -winheight/3.0
-            self.prompt.pos = [self.ORIGIN, step * downward_step]
+            downward_step = winheight/3.0
+            self.prompt.pos = [self.ORIGIN, winheight/2 - step * downward_step]
 
     def _position_answers(self):
         '''Position the answers.
