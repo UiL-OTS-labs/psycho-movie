@@ -17,6 +17,7 @@ class Message(visual.TextStim):
         self.term_special_keys = []
         self.time = None
         self.terminator = None
+        self.start_time = 0.0
 
     def present(self, dur=-1, term_keys="", term_special_keys=[SPACE]):
         '''
@@ -26,17 +27,21 @@ class Message(visual.TextStim):
         @param term_keys a string with keys that terminate the stimulus
         @param term_special_keys use the constants for the keys from the
                constants module
-        @return a tuple with the terminating button and timestamp
+        @return a tuple with the terminating button and rt
         '''
         self.term_keys          = term_keys
         self.term_special_keys  = term_special_keys
+        self.start_time         = 0.0
 
         stop = False
         while not stop:
-            # Draw window (in loop because otherwise drawing artifacts occur
-            # when another overlaps the psychopy window. (it won't be refresed.)
+            # Draw window inside loop because otherwise drawing artifacts occur
+            # when another overlaps the psychopy window.
+            # The window won't be refreshed.
             self.draw()
-            self.win.flip(True)
+            now = self.win.flip(True)
+            if not self.start_time:
+                self.start_time = now
 
             keys = event.getKeys(timeStamped=True)
             if not keys:
@@ -48,4 +53,5 @@ class Message(visual.TextStim):
                     self.terminator = key
                     break
 
-        return self.terminator, self.time
+        return self.terminator, self.time - self.start_time
+

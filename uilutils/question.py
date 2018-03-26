@@ -35,8 +35,9 @@ class Question(object):
         self.special_keys   = [] # a list with specialkey valus from constants.py
         self.values         = [] # a whose indexes matches those of answers
         self.font_color     = font_color
-        self.time           = -1; # indicate time is invalide by specifying 
+        self.time           = -1; # indicate time is invalid by specifying 
                                   # a negative time.
+        self.time_start     = 0.0
         
         # prompt fontsize
         self.pfontsize      = fontsize
@@ -126,7 +127,7 @@ class Question(object):
         ''' Set the answer options of the stimulus
         All these function parameters should be iterable and there length
         should be equal.
-        @param Strings the values on the buttons
+        @param strings the values on the buttons
         @param keys the keys that will be valid as answer a iterable/string
         @param special_keys the special keys from constants module
         @param values This is the value returned to the user.
@@ -165,11 +166,12 @@ class Question(object):
         stimulus.
 
         NOTE II : the duration parameter is currently ignored.
-        Returns the chosen value and the time stamp.
+        Returns the chosen value and the rt.
         '''
         stop = False
         index = -1
         timestamp = -1.0
+        self.time_start = 0.0
         self._position_widgets()
 
         while not stop:
@@ -179,7 +181,9 @@ class Question(object):
             for ans in self.answers:
                 ans.draw()
 
-            self.window.flip(True)
+            fliptime = self.window.flip(True)
+            if not self.time_start:
+                self.time_start = fliptime
 
             keys = event.getKeys(timeStamped=True)
             if not keys:
@@ -201,5 +205,5 @@ class Question(object):
         else:
             self.value = None
 
-        return self.value, self.time
+        return self.value, self.time - self.time_start
 
