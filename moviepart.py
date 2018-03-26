@@ -17,7 +17,7 @@ def run_movie_part(window, stims):
     '''This runs the movie part of the experiment.
     First it waits for the participant to press space than a movie is
     presented. After the movie a true/false question is asked.
-    This function returns a 
+    This function returns the responses the participant has given.
     '''
     responses = dict()
     TRUE_RESP = ["t", "lshift"]
@@ -44,7 +44,7 @@ def run_movie_part(window, stims):
 
         #present_movie(window, moviefn)
 
-        keys, = question.present(
+        keys, rt = question.present(
             term_keys=valid_resp,
             term_special_keys=valid_special_resp
             )
