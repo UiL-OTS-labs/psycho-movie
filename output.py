@@ -1,5 +1,6 @@
 
 import settings
+import stimuli
 from os import path
 
 FILE_OK = 0
@@ -17,7 +18,7 @@ class OutFilenameException(Exception):
         - self.description a string representation of the error.
     '''
     _DIR_INVALID_FMT = 'The directory of "{}" is not valid'
-    _FILE_EXIST_FMT = 'The file "{}" already seems to exist'
+    _FILE_EXIST_FMT  = 'The file "{}" already seems to exist'
     
     def __init__(interror, fn):
         ''' interror should be FILE_OK or FILE_EXISTS fn the inspected filename
@@ -70,6 +71,40 @@ class MovieOutput(list):
             raise ValueError(
                 "Index should be MovieItem.N, MOVIEFN, ANSWER or RT"
                 )
+
+class QuestionOutput(stimuli.QuestionParameters):
+    '''A collection of output values for this experiment'''
+
+    def __init__(self, qp, answer, rt):
+        ''' Initialise new question output instance from it's stimulus
+        parameters, an answer and rt.
+
+        @param qp       a stimuli.QuestionParameters instance
+        @param answer   the answer provided by the participant [1,2,3,4 or 5]
+        @param rt       reaction time
+        '''
+        super(QuestionOutput, self).__init__(
+            qp.filename,
+            qp.statement,
+            qp.id
+            )
+        self.answer = answer
+        self.rt = rt
+    
+    def stringfy_tabbed(self, delimiter="\t"):
+        '''Returns a stringfied version of oneself with a given delimiter'''
+        slist = [
+            str(self.id),
+            str(self.filename),
+            str(self.answer),
+            str(self.rt)
+        ]
+        return delimiter.join(slist)
+
+    def __str__(self):
+        '''stringifies oneself to save in csv file with tab as delimiter'''
+        return self.stringfy_tabbed("\t")
+        
 
 def get_save_file_names(group, pp_id):
     ''' Returns the names for the files to save base on the group and 

@@ -7,11 +7,19 @@ import argparse
 import sys
 import os.path
 import moviepart
+import questionpart
 import stimuli
 import output
 import uilutils.message  as um
 from uilutils.colors import *       # color constants
 from uilutils.constants import *    # General constants.
+
+# some global constants.
+
+_MOVIE_HDR = "id\tmovie\tanswer\trt" # header for movie output
+_QUESTION_HDR = "id\tpicture\tanswer\trt" # header for movie output
+
+# the functions.
 
 def validate_filename(fn):
     '''Validates the file names that are going to be used for the output, it
@@ -46,7 +54,6 @@ def validate_filename(fn):
             exit("Aborting experiment please provide unused group and pp_id")
 
 
-_MOVIE_HDR = "id\tmovie\tanswer\trt" # header for movie output
 def save_movie_output(outfile, movie_output):
     ''' Saves the output of the movie part of the experiment.
 
@@ -57,11 +64,22 @@ def save_movie_output(outfile, movie_output):
     sortedlist = [movie_output[key] for key in sorted(movie_output)]
     for i in sortedlist:
         outfile.write(str(i) + "\n")
+
+def save_question_output(outfile, question_output):
+    ''' Saves the output of the question part of the experiment.
+
+    @param outfile    an already opened output file object.
+    @question_output  the stuff that the run_question_part() function returned
+    '''
+    outfile.write(_QUESTION_HDR + "\n")
+    for i in question_output:
+        outfile.write(str(i) + "\n")
     
 
 def run_experiment(args):
     '''Opens a window and runs the experiment'''
     moviestims = None
+    queststimg = None
     group = 0
     pp_id = ""
     try:
@@ -71,8 +89,10 @@ def run_experiment(args):
     
     if args.group == 1:
         moviestims = stimuli.movie_stims1
+        questionstims = stimuli.question_stims1
     elif args.group == 2:
         moviestims = stimuli.movie_stims2
+        questionstims = stimuli.question_stims1
     else:
         exit(
             'Invalid value for group: "{}" expected 1 or 2.'.format(args.group)
@@ -102,10 +122,12 @@ def run_experiment(args):
 
     mesg.present()
     
+    # open the output files and run the two parts of this experiment
     with open(question_fn, 'w') as qf, open(movie_fn, 'w') as mf:
-        answers = moviepart.run_movie_part(win, moviestims)
-        save_movie_output(mf, answers)
-        questionpart.run_questions(win, answers)
+        manswers = moviepart.run_movie_part(win, moviestims)
+        save_movie_output(mf, manswers)
+        qanswers = questionpart.run_question_part(win, questionstims, manswers)
+        save_question_output(qf, qanswers)
 
 def parse_cmd():
     ''' Parses command line returns the parsed arguments

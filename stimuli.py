@@ -59,7 +59,7 @@ movie_stims2 = [
 #The general question, use "".format to specify the 
 gen_question = (
     "You got a statement about the image above:\n"
-    "{}" # format specifier for the statement
+    "{}\n" # format specifier for the statement
     "You answered \"{}\"\n"
     "On a scale from 1 (uncertain) to 5 (certain), how certain are you?"
     )
