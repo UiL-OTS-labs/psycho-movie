@@ -27,10 +27,18 @@ class Question(object):
             prompt,
             widget=None,
             fontsize=constants.DEF_FONTSIZE,
-            font_color=colors.BLACK
+            font_color=colors.BLACK,
+            defPromptWrap=0.8
             ):
         '''Initializes a question/prompt, answer option and optionally another
         psychopy widget.
+        @param window the window to display the question on.
+        @param prompt the string to display at the prompt
+        @param widget A optional extra widget to display
+        @param fontsize the fontsize to use
+        @param font_color the fill color of the fonts
+        @param defPromptWrap = the line wrapping of the prompt by default
+                               the wrapping is 0.8 time the width of the window
         '''
         self.window = window
         self.answer_strings = []
@@ -51,12 +59,15 @@ class Question(object):
         # question fontsize
         self.afontsize = fontsize
 
+        self.defRelPromptWrap = 0.8 
+
         # create prompt
         self.prompt = visual.TextStim(
             self.window,
             self.prompt_string,
             height=self.pfontsize,
-            color=font_color
+            color=font_color,
+            wrapWidth=self.defRelPromptWrap * window.size[0]
             )
 
     def _position_widgets(self):
