@@ -27,7 +27,6 @@ def run_question_part(window, stims, answers):
         image = visual.ImageStim(window, fn)
         imwidth, imheight = tuple(image.size)
         prev_ans = answers[stim.id][output.MovieOutput.ANSWER]
-        print ("Prev ans = {} the dict is {}".format(prev_ans, answers[stim.id]))
         questionstr = stimuli.gen_question.format(
             stim.statement,
             prev_ans
