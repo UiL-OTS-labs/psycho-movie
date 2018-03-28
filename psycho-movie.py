@@ -45,6 +45,20 @@ def validate_filename(fn):
         else:
             exit("Aborting experiment please provide unused group and pp_id")
 
+
+_MOVIE_HDR = "id\tmovie\tanswer\trt" # header for movie output
+def save_movie_output(outfile, movie_output):
+    ''' Saves the output of the movie part of the experiment.
+
+    @param outfile an already opened output file object.
+    @movie_output  the stuff that the run_movie_part() function returned
+    '''
+    outfile.write(_MOVIE_HDR + "\n")
+    sortedlist = [movie_output[key] for key in sorted(movie_output)]
+    for i in sortedlist:
+        outfile.write(str(i) + "\n")
+    
+
 def run_experiment(args):
     '''Opens a window and runs the experiment'''
     moviestims = None
@@ -65,8 +79,9 @@ def run_experiment(args):
             )
     pp_id = args.participant_id
     movie_fn, question_fn = output.get_save_file_names(group, pp_id)
-    for i in [movie_fn, question_fn]:
-        validate_filename(i)
+    if not args.skip_fn_checks:
+        for i in [movie_fn, question_fn]:
+            validate_filename(i)
     
     window_num = args.window
     win = visual.Window(
@@ -89,7 +104,7 @@ def run_experiment(args):
     
     with open(question_fn, 'w') as qf, open(movie_fn, 'w') as mf:
         answers = moviepart.run_movie_part(win, moviestims)
-        write_movie_data(mf, answers)
+        save_movie_output(mf, answers)
         questionpart.run_questions(win, answers)
 
 def parse_cmd():
