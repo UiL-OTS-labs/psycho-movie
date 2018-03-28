@@ -11,6 +11,8 @@ PROGRAM_PATH_NAME = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 # variable to whether or not we run in debug mode
 DEBUG = False
+# variable to skip movies
+SKIP_MOVIE = False
 # a folder to store the stimuli
 STIMDIR = PROGRAM_PATH_NAME + "/stimuli/"
 # a name for the directory to output to.
