@@ -8,15 +8,48 @@ import sys
 import os.path
 import moviepart
 import stimuli
+import output
 import uilutils.message  as um
 from uilutils.colors import *       # color constants
 from uilutils.constants import *    # General constants.
 
+def validate_filename(fn):
+    '''Validates the file names that are going to be used for the output, it
+    handles existing file names, by allowing the user to choose whether to
+    continue. If the directory part of fn is not an existing dir it will
+    terminate the experiment.
+    '''
+
+    status = output.is_save_file_alright(fn)
+    if status == output.FILE_OK:
+        return
+    elif status == output.DIR_IS_INVALID:
+        USR_MSG = 'The folder "{}" in the file name "{}" is invalid.'.format(
+            os.path.dirname(fn),
+            fn
+            )
+        exit(USR_MSG)
+    elif status == output.FILE_EXISTS:
+        USR_MSG = 'The file "{}" in the folder "{}" exists.'.format(
+            os.path.basename(fn),
+            os.path.dirname(fn)
+            )
+        print(USR_MSG, file=sys.stderr)
+        print ("Would you like to overwrite existing file: [y]es or [n]o:")
+        usr_input = ""
+        while not usr_input in ["y", "n", "yes", "no"]:
+            usr_input = raw_input("\ty/n: ")
+
+        if usr_input == "y":
+            return #overwrite the data.
+        else:
+            exit("Aborting experiment please provide unused group and pp_id")
 
 def run_experiment(args):
     '''Opens a window and runs the experiment'''
     moviestims = None
     group = 0
+    pp_id = ""
     try:
         group = args.group
     except AttributeError as e:
@@ -30,6 +63,10 @@ def run_experiment(args):
         exit(
             'Invalid value for group: "{}" expected 1 or 2.'.format(args.group)
             )
+    pp_id = args.participant_id
+    movie_fn, question_fn = output.get_save_file_names(group, pp_id)
+    for i in [movie_fn, question_fn]:
+        validate_filename(i)
     
     window_num = args.window
     win = visual.Window(
@@ -49,9 +86,11 @@ def run_experiment(args):
         )
 
     mesg.present()
-
-    answers = moviepart.run_movie_part(win, moviestims)
-    questionpart.run_questions(win, answers)
+    
+    with open(question_fn, 'w') as qf, open(movie_fn, 'w') as mf:
+        answers = moviepart.run_movie_part(win, moviestims)
+        write_movie_data(mf, answers)
+        questionpart.run_questions(win, answers)
 
 def parse_cmd():
     ''' Parses command line returns the parsed arguments
@@ -63,7 +102,7 @@ def parse_cmd():
         "from a movie and sees the answer provided by him/herself. Than the " 
         "participant answers a how sure he/she is about the statement"
         )
-    epilog  = "Have fun using this utility!"
+    epilog  = "Happy experiment!"
     whelpstr= ("an integer from the set [0,n) where n is the number of "
               "displays/monitors are connected.")
     dhelpstr= ("A flag useful while testing the program. This "
@@ -79,6 +118,13 @@ def parse_cmd():
     parser.add_argument("group", type=int, help=ghelpstr)
     parser.add_argument("participant_id", type=str, help=phelpstr)
     parser.add_argument("-d", "--debug", action="store_true", help=dhelpstr)
+    parser.add_argument(
+        "-s",
+        "--skip-fn-checks",
+        action='store_true',
+        default=False,
+        help="Don't use unless you know and accept the consequences"
+        )
 
     return parser.parse_args()
 

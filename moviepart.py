@@ -3,6 +3,7 @@ from psychopy import visual
 import stimuli
 import settings
 import uilutils.message as um
+import output
 from uilutils import constants
 from uilutils.colors import *
 
@@ -50,14 +51,25 @@ def run_movie_part(window, stims):
             )
 
         if keys in TRUE_RESP:
-            responses[params.id] = True
+            responses[params.id] = output.MovieOutput(
+                params.id,
+                moviefn,
+                True,
+                rt
+                )
         elif keys in FALSE_RESP:
-            responses[params.id] = False
+            responses[params.id] = output.MovieOutput(
+                params.id,
+                moviefn,
+                False,
+                rt
+                )
         else:
             raise RuntimeError(
                 "There is a bug in this experiment, please show this "
-                "To the technicians"
+                "to the technicians"
                 )
+    print(responses)
     return responses
 
 
