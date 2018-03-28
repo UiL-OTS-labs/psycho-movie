@@ -10,16 +10,18 @@ import moviepart
 import questionpart
 import stimuli
 import output
-import uilutils.message  as um
+import uilutils.message as um
 from uilutils.colors import *       # color constants
 from uilutils.constants import *    # General constants.
 
 # some global constants.
 
-_MOVIE_HDR = "id\tmovie\tanswer\trt" # header for movie output
-_QUESTION_HDR = "id\tpicture\tanswer\trt" # header for movie output
+_MOVIE_HDR = "id\tmovie\tanswer\trt"        # header for movie output
+_QUESTION_HDR = "id\tpicture\tanswer\trt"   # header for question output
+
 
 # the functions.
+
 
 def validate_filename(fn):
     '''Validates the file names that are going to be used for the output, it
@@ -45,11 +47,11 @@ def validate_filename(fn):
         print(USR_MSG, file=sys.stderr)
         print ("Would you like to overwrite existing file: [y]es or [n]o:")
         usr_input = ""
-        while not usr_input in ["y", "n", "yes", "no"]:
+        while usr_input not in ["y", "n", "yes", "no"]:
             usr_input = raw_input("\ty/n: ")
 
         if usr_input == "y":
-            return #overwrite the data.
+            return  # overwrite the data.
         else:
             exit("Aborting experiment please provide unused group and pp_id")
 
@@ -65,6 +67,7 @@ def save_movie_output(outfile, movie_output):
     for i in sortedlist:
         outfile.write(str(i) + "\n")
 
+
 def save_question_output(outfile, question_output):
     ''' Saves the output of the question part of the experiment.
 
@@ -74,7 +77,7 @@ def save_question_output(outfile, question_output):
     outfile.write(_QUESTION_HDR + "\n")
     for i in question_output:
         outfile.write(str(i) + "\n")
-    
+
 
 def run_experiment(args):
     '''Opens a window and runs the experiment'''
@@ -86,7 +89,7 @@ def run_experiment(args):
         group = args.group
     except AttributeError as e:
         exit("Group isn't specified, but it is mandatory to do so.")
-    
+
     if args.group == 1:
         moviestims = stimuli.movie_stims1
         questionstims = stimuli.question_stims1
@@ -102,7 +105,7 @@ def run_experiment(args):
     if not args.skip_fn_checks:
         for i in [movie_fn, question_fn]:
             validate_filename(i)
-    
+
     window_num = args.window
     win = visual.Window(
         [800, 800],
@@ -121,7 +124,7 @@ def run_experiment(args):
         )
 
     mesg.present()
-    
+
     # open the output files and run the two parts of this experiment
     with open(question_fn, 'w') as qf, open(movie_fn, 'w') as mf:
         manswers = moviepart.run_movie_part(win, moviestims)
@@ -129,28 +132,35 @@ def run_experiment(args):
         qanswers = questionpart.run_question_part(win, questionstims, manswers)
         save_question_output(qf, qanswers)
 
+
 def parse_cmd():
     ''' Parses command line returns the parsed arguments
     '''
     descr = (
-        "This is a program intended to run a small experiment. In the first " 
+        "This is a program intended to run a small experiment. In the first "
         "part of the experiment a few movies are displayed follow by "
         "true/false questions. In the second part a user views a picture "
-        "from a movie and sees the answer provided by him/herself. Than the " 
+        "from a movie and sees the answer provided by him/herself. Than the "
         "participant answers a how sure he/she is about the statement"
         )
-    epilog  = "Happy experimenting!"
-    whelpstr= ("an integer from the set [0,n) where n is the number of "
-              "displays/monitors are connected.")
-    dhelpstr= ("A flag useful while testing the program. This "
-               "flag shouldn't be used while running the experiment"
-              )
-    ghelpstr= ("Specify the group for the experiment.")
-    phelpstr= ("Specify the id for the current participant.")
+    epilog = "Happy experimenting!"
+    whelpstr = (
+        "an integer from the set [0,n) where n is the number of "
+        "displays/monitors are connected."
+    )
+    dhelpstr = (
+        "A flag useful while testing the program. This "
+        "flag shouldn't be used while running the experiment"
+    )
+    ghelpstr = ("Specify the group for the experiment.")
+    phelpstr = ("Specify the id for the current participant.")
     progname = os.path.basename(sys.argv[0])
 
-    parser = argparse.ArgumentParser(prog=progname, description=descr,
-        epilog=epilog)
+    parser = argparse.ArgumentParser(
+        prog=progname,
+        description=descr,
+        epilog=epilog
+        )
     parser.add_argument("-w", "--window", type=int, help=whelpstr, default=1)
     parser.add_argument("group", type=int, help=ghelpstr)
     parser.add_argument("participant_id", type=str, help=phelpstr)
@@ -174,4 +184,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
