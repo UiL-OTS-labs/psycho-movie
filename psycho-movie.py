@@ -139,7 +139,7 @@ def parse_cmd():
         "from a movie and sees the answer provided by him/herself. Than the " 
         "participant answers a how sure he/she is about the statement"
         )
-    epilog  = "Happy experiment!"
+    epilog  = "Happy experimenting!"
     whelpstr= ("an integer from the set [0,n) where n is the number of "
               "displays/monitors are connected.")
     dhelpstr= ("A flag useful while testing the program. This "

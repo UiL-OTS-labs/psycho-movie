@@ -4,6 +4,7 @@ from uilutils import question as uq
 from psychopy import visual
 import settings
 import output
+import stimuli
 
 def run_question_part(window, stims, answers):
     ''' Runs all the questions in stims.
@@ -25,7 +26,13 @@ def run_question_part(window, stims, answers):
         fn = STIMDIR + stim.filename
         image = visual.ImageStim(window, fn)
         imwidth, imheight = tuple(image.size)
-        question = uq.Question(window, stim.statement, image)
+        prev_ans = answers[stim.id][output.MovieOutput.ANSWER]
+        print ("Prev ans = {} the dict is {}".format(prev_ans, answers[stim.id]))
+        questionstr = stimuli.gen_question.format(
+            stim.statement,
+            prev_ans
+            )
+        question = uq.Question(window, questionstr, image)
         question.set_answer_options(ansstr, keys, [], values)
         certainty, rt = question.present()
         listoutput.append(output.QuestionOutput(stim, certainty, rt))

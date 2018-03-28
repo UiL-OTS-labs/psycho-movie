@@ -71,6 +71,7 @@ class MovieOutput(list):
             raise ValueError(
                 "Index should be MovieItem.N, MOVIEFN, ANSWER or RT"
                 )
+        return super(MovieOutput, self).__getitem__(index)
 
 class QuestionOutput(stimuli.QuestionParameters):
     '''A collection of output values for this experiment'''
