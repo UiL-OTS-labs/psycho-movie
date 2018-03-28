@@ -7,10 +7,12 @@ been implemented yet......
 import psychopy.event
 import queue
 
+
 try:
     import threading as pt
 except ImportError:
     import Threading as pt
+
 
 class EventKey (object):
     ''' Each Eventy should be registered by a KeyEventHandler.
@@ -30,10 +32,10 @@ class EventKey (object):
 
 class KeyEventHandler(object):
     ''' Handles responses in an asynchronous manner.
-    
+
     This means that keyboard events can be handled while waiting on
     window.flip or core.wait(). This makes it easier to capture keypresses.
-    
+
     Note according the psychopy docs it only works with the pyglet backend.
     '''
 
@@ -46,7 +48,7 @@ class KeyEventHandler(object):
         self.registered = []
         for key in keys:
             self.add_key(key)
-    
+
     def add_key(self, key):
         '''Registers a key (,with modifiers) within psychopy
         When the participant presses this key, key press will be called.
@@ -64,4 +66,3 @@ class KeyEventHandler(object):
         key is pressed'''
         self.queue.put(key)
         self.event.set()
-

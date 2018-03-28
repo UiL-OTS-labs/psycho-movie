@@ -1,8 +1,15 @@
+'''
+This module contains a Question class. The classes here should represent a
+kind of a question, the question should be answerable by a keyboard response.
+The response will terminate the questions.
+'''
+
 from __future__ import print_function
 from psychopy import visual, event
 
 import constants
 import colors
+
 
 class Question(object):
     '''
@@ -15,41 +22,41 @@ class Question(object):
     ORIGIN = 0.0
 
     def __init__(
-        self,
-        window,
-        prompt,
-        widget=None,
-        fontsize=constants.DEF_FONTSIZE,
-        font_color=colors.BLACK
-        ):
+            self,
+            window,
+            prompt,
+            widget=None,
+            fontsize=constants.DEF_FONTSIZE,
+            font_color=colors.BLACK
+            ):
         '''Initializes a question/prompt, answer option and optionally another
-        psychopy widget.        
+        psychopy widget.
         '''
-        self.window         = window
+        self.window = window
         self.answer_strings = []
-        self.prompt_string  = prompt
-        self.widget         = widget
-#        self.ans_spacing    = window.width/2
-        self.answers        = [] # A list of psyhopy TextStim
-        self.keys           = [] # a iterable with keys
-        self.special_keys   = [] # a list with specialkey valus from constants.py
-        self.values         = [] # a whose indexes matches those of answers
-        self.font_color     = font_color
-        self.time           = -1; # indicate time is invalid by specifying 
-                                  # a negative time.
-        self.time_start     = 0.0
-        
-        # prompt fontsize
-        self.pfontsize      = fontsize
-        # question fontsize
-        self.afontsize      = fontsize
+        self.prompt_string = prompt
+        self.widget = widget
+        self.answers = []   # A list of psyhopy TextStim
+        self.keys = []      # a iterable with keys
+        self.special_keys = []  # list with specialkey valus from constants.py
+        self.values = []    # a whose indexes matches those of answers
+        self.font_color = font_color
 
-        # create prompt        
+        # indicate time is invalid by specifying a negative time.
+        self.time = -1
+        self.time_start = 0.0
+
+        # prompt fontsize
+        self.pfontsize = fontsize
+        # question fontsize
+        self.afontsize = fontsize
+
+        # create prompt
         self.prompt = visual.TextStim(
             self.window,
             self.prompt_string,
-            height = self.pfontsize,
-            color = font_color
+            height=self.pfontsize,
+            color=font_color
             )
 
     def _position_widgets(self):
@@ -67,7 +74,7 @@ class Question(object):
         if self.widget:
             winwidth, winheight = tuple(self.window.size)
             pos = [self.ORIGIN, winheight/2.0 - winheight/4.0]
-            self.widget.pos = pos 
+            self.widget.pos = pos
 
     def _position_prompt(self):
         '''Position the prompt, it depends whether the widget is set.'''
@@ -85,8 +92,8 @@ class Question(object):
         The location the answers will appear is spread horizontally.
         The and also vertically. They will be spread out (with the prompt)
         on complete window height if no widget is specified.
-        If one is specified, the answers will be spread on the lower half of the
-        window.
+        If one is specified, the answers will be spread on the lower half of
+        the window.
         '''
         vstep = 2
         y = 0.0
@@ -100,9 +107,9 @@ class Question(object):
         else:
             downward_step = winheight/3.0
             sideward_step = winwidth/(len(self.answers) + 1)
-            top = self.ORIGIN + winheight/2 
+            top = self.ORIGIN + winheight/2
             y = top - vstep * downward_step
-        
+
         for i in range(len(self.answers)):
             hstep = i + 1
             left = -winwidth/2.0
@@ -117,13 +124,13 @@ class Question(object):
 #        self.answer_spacing = spacing
 
     def set_answer_options(
-        self,
-        strings,
-        keys,
-        special_keys,
-        values,
-        font_sz=constants.DEF_FONTSIZE
-        ):
+            self,
+            strings,
+            keys,
+            special_keys,
+            values,
+            font_sz=constants.DEF_FONTSIZE
+            ):
         ''' Set the answer options of the stimulus
         All these function parameters should be iterable and there length
         should be equal.
@@ -199,11 +206,10 @@ class Question(object):
                     self.time = timestamp
                     index = self.special_keys
                     break
-        
+
         if index >= 0:
             self.value = self.values[index]
         else:
             self.value = None
 
         return self.value, self.time - self.time_start
-
