@@ -45,7 +45,9 @@ def run_movie_part(window, stims):
             )
         waitforpp.present()
 
-        present_movie(window, moviefn)
+        if not settings.SKIP_MOVIE or not settings.DEBUG:
+            # Only skip move when it is set and running in debug mode.
+            present_movie(window, moviefn)
 
         keys, rt = question.present(
             term_keys=valid_resp,

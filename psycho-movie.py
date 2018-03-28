@@ -10,6 +10,7 @@ import moviepart
 import questionpart
 import stimuli
 import output
+import settings
 import uilutils.message as um
 from uilutils.colors import *       # color constants
 from uilutils.constants import *    # General constants.
@@ -100,6 +101,11 @@ def run_experiment(args):
         exit(
             'Invalid value for group: "{}" expected 1 or 2.'.format(args.group)
             )
+    if args.debug:
+        settings.DEBUG = True
+    if args.skipmovie: 
+        settings.SKIP_MOVIE = True
+
     pp_id = args.participant_id
     movie_fn, question_fn = output.get_save_file_names(group, pp_id)
     if not args.skip_fn_checks:
@@ -165,6 +171,7 @@ def parse_cmd():
     parser.add_argument("group", type=int, help=ghelpstr)
     parser.add_argument("participant_id", type=str, help=phelpstr)
     parser.add_argument("-d", "--debug", action="store_true", help=dhelpstr)
+    parser.add_argument("--skipmovie", action="store_true", help="for debugging")
     parser.add_argument(
         "-s",
         "--skip-fn-checks",
