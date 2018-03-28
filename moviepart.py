@@ -43,7 +43,7 @@ def run_movie_part(window, stims):
             )
         waitforpp.present()
 
-        #present_movie(window, moviefn)
+        present_movie(window, moviefn)
 
         keys, rt = question.present(
             term_keys=valid_resp,
@@ -69,7 +69,6 @@ def run_movie_part(window, stims):
                 "There is a bug in this experiment, please show this "
                 "to the technicians"
                 )
-    print(responses)
     return responses
 
 
