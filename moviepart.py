@@ -7,12 +7,14 @@ import output
 from uilutils import constants
 from uilutils.colors import *
 
+
 def present_movie(window, filename, stimdir=settings.STIMDIR):
     '''Presents a single movie.'''
     moviestim = visual.MovieStim2(window, stimdir + filename)
     while moviestim.status != visual.FINISHED:
         moviestim.draw()
         window.flip(True)
+
 
 def run_movie_part(window, stims):
     '''This runs the movie part of the experiment.
@@ -70,6 +72,3 @@ def run_movie_part(window, stims):
                 "to the technicians"
                 )
     return responses
-
-
-        

@@ -9,6 +9,7 @@ from __future__ import print_function
 import settings
 import sys
 
+
 class MovieParameters(object):
     '''Contains the required parameters for a movie + question stimulus.
     '''
@@ -18,13 +19,14 @@ class MovieParameters(object):
         self.question = question
         self.id = id
 
+
 class QuestionParameters(object):
     '''Contains the required parameters for a question + a picture.'''
 
     def __init__(self, filename, statement, stim_id):
-        self.filename  = filename
+        self.filename = filename
         self.statement = statement
-        self.id        = stim_id
+        self.id = stim_id
 
 waitmsg = ("Press spacebar to continue")
 
@@ -44,22 +46,22 @@ statement1 = ("The woman crashed into\n"
               "the poor bloke.")
 statement2 = ("There was a python book standing on the shelf.")
 
-#parameters for experimental group 1
+# parameters for experimental group 1
 movie_stims1 = [
     MovieParameters("Collide_Joint.mp4", statement1, 1),
     MovieParameters("Text_Joint_V3.mp4", statement2, 2)
 ]
 
-#parameters for experimental group 2
+# parameters for experimental group 2
 movie_stims2 = [
     MovieParameters("Text_Joint_V3.mp4", statement2, 2),
     MovieParameters("Collide_Joint.mp4", statement1, 1)
 ]
 
-#The general question, use "".format to specify the 
+# The general question, use "".format to specify the
 gen_question = (
     "You got a statement about the image above:\n\n"
-    "{}\n\n" # format specifier for the statement
+    "{}\n\n"  # format specifier for the statement
     "You answered \"{}\"\n"
     "On a scale from 1 (uncertain) to 5 (certain), how certain are you?"
     )
@@ -74,16 +76,17 @@ question_stims2 = [
     QuestionParameters("konijn.png", statement2, 2)
 ]
 
+
 def check_stimuli(print_errors=True):
-    ''' This function will check whether all specified stimuli exist and
+    '''This function will check whether all specified stimuli exist and
     whether they are readable.
     @param print_errors if True names of not so dandy files will be
                         printed to stderr.
     @return True if everything seems nice and dandy, otherwise False.
     TODO perhaps create a function for checking each list...
     '''
-    faulty_fns = [] #faulty filenames
-    
+    faulty_fns = []  # faulty filenames
+
     # check movie_stims1
     for stim in movie_stims1:
         fn = settings.STIMDIR + stim.filename
@@ -92,7 +95,7 @@ def check_stimuli(print_errors=True):
                 pass
         except IOError:
             faulty_fns.append(fn)
-    
+
     # check movie_stims2
     for stim in movie_stims2:
         fn = settings.STIMDIR + stim.filename
@@ -101,8 +104,8 @@ def check_stimuli(print_errors=True):
                 pass
         except IOError:
             faulty_fns.append(fn)
-    
-    # check question_stims1 
+
+    # check question_stims1
     for stim in question_stims1:
         fn = settings.STIMDIR + stim.filename
         try:
@@ -110,7 +113,7 @@ def check_stimuli(print_errors=True):
                 pass
         except IOError:
             faulty_fns.append(fn)
-    
+
     # check question_stims2
     for stim in question_stims2:
         fn = settings.STIMDIR + stim.filename
@@ -128,4 +131,3 @@ def check_stimuli(print_errors=True):
             msg = " - {}".format(fn)
 
     return False if faulty_fns else True
-
