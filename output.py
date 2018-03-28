@@ -3,9 +3,11 @@ import settings
 import stimuli
 from os import path
 
+# Constants
 FILE_OK = 0
 DIR_IS_INVALID = 1
 FILE_EXISTS = 2
+
 
 class OutFilenameException(Exception):
     '''The exception that is raised when a either the directory of an output
@@ -17,9 +19,11 @@ class OutFilenameException(Exception):
         - self.filename is the filename that isn't dandy
         - self.description a string representation of the error.
     '''
+
     _DIR_INVALID_FMT = 'The directory of "{}" is not valid'
-    _FILE_EXIST_FMT  = 'The file "{}" already seems to exist'
-    
+
+    _FILE_EXIST_FMT = 'The file "{}" already seems to exist'
+
     def __init__(interror, fn):
         ''' interror should be FILE_OK or FILE_EXISTS fn the inspected filename
         '''
@@ -47,11 +51,11 @@ class MovieOutput(list):
         @param answer   the answer provided by the participant
         @param rt       the time it took to answer the true/false question
         '''
-        super(MovieOutput, self).__init__( [n, moviefn, answer, rt] )
+        super(MovieOutput, self).__init__([n, moviefn, answer, rt])
 
     def stringfy_tabbed(self, delimiter="\t"):
         '''Returns a stringfied version of oneself with a given delimiter'''
-        out  = delimiter.join([str(i) for i in self])
+        out = delimiter.join([str(i) for i in self])
         return out
 
     def __str__(self):
@@ -62,7 +66,7 @@ class MovieOutput(list):
         return str(self)
 
     def __getitem__(self, index):
-        ''' The output is stored in a list, you can obtain the right value 
+        '''The output is stored in a list, you can obtain the right value
         by using one of MovieItem.N, MOVIEFN, ANSWER or RT.
 
         @param index a valid index constant from the MovieOutput class
@@ -72,6 +76,7 @@ class MovieOutput(list):
                 "Index should be MovieItem.N, MOVIEFN, ANSWER or RT"
                 )
         return super(MovieOutput, self).__getitem__(index)
+
 
 class QuestionOutput(stimuli.QuestionParameters):
     '''A collection of output values for this experiment'''
@@ -91,7 +96,7 @@ class QuestionOutput(stimuli.QuestionParameters):
             )
         self.answer = answer
         self.rt = rt
-    
+
     def stringfy_tabbed(self, delimiter="\t"):
         '''Returns a stringfied version of oneself with a given delimiter'''
         slist = [
@@ -105,10 +110,10 @@ class QuestionOutput(stimuli.QuestionParameters):
     def __str__(self):
         '''stringifies oneself to save in csv file with tab as delimiter'''
         return self.stringfy_tabbed("\t")
-        
+
 
 def get_save_file_names(group, pp_id):
-    ''' Returns the names for the files to save base on the group and 
+    '''Returns the names for the files to save base on the group and
     participant id.
     @param group The group for the current participant
     @param pp_id The participant id
@@ -130,10 +135,10 @@ def is_save_file_alright(fn):
 
     returns DIR_IS_INVALID, FILE_EXISTS or hopefully FILE_OK
     '''
-    dir_ok= True if path.isdir(path.dirname(fn)) else False
+    dir_ok = True if path.isdir(path.dirname(fn)) else False
     if not dir_ok:
         return DIR_IS_INVALID
-    
+
     if path.exists(fn):
         return FILE_EXISTS
 

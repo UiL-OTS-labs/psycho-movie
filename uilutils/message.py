@@ -1,16 +1,20 @@
-
+'''
+This module presents a message class, the message is a text stimulus. Once
+the stimulus. For each stimulus a number of keys should be set that are
+allowed to terminate the stimulus.
+'''
 from psychopy import visual, event
 from constants import *
+
 
 class Message(visual.TextStim):
     '''Simple wrapper around a text stimulus
     The main idea is that one presents a string until a button has
     been pressed or a given time has expired.
-    This stimulus has not been designed for precise timing. Rather to 
+    This stimulus has not been designed for precise timing. Rather to
     simply present a text stimulus that waits for user input.
     '''
 
-    
     def __init__(self, win, *args, **kwargs):
         super(Message, self).__init__(win, *args, **kwargs)
         self.term_keys = []
@@ -29,9 +33,9 @@ class Message(visual.TextStim):
                constants module
         @return a tuple with the terminating button and rt
         '''
-        self.term_keys          = term_keys
-        self.term_special_keys  = term_special_keys
-        self.start_time         = 0.0
+        self.term_keys = term_keys
+        self.term_special_keys = term_special_keys
+        self.start_time = 0.0
 
         stop = False
         while not stop:
@@ -54,4 +58,3 @@ class Message(visual.TextStim):
                     break
 
         return self.terminator, self.time - self.start_time
-
