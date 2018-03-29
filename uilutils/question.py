@@ -59,7 +59,7 @@ class Question(object):
         # question fontsize
         self.afontsize = fontsize
 
-        self.defRelPromptWrap = 0.8 
+        self.defRelPromptWrap = 0.8
 
         # create prompt
         self.prompt = visual.TextStim(
