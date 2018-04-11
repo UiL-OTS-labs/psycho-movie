@@ -3,6 +3,7 @@ from psychopy import visual
 import stimuli
 import settings
 import uilutils.message as um
+import uilutils.question as uq
 import output
 from uilutils import constants
 from uilutils.colors import *
@@ -23,10 +24,11 @@ def run_movie_part(window, stims):
     This function returns the responses the participant has given.
     '''
     responses = dict()
-    TRUE_RESP = ["t", "lshift"]
-    FALSE_RESP = ["f", "rshift"]
-    valid_resp = [TRUE_RESP[0], FALSE_RESP[0]]
-    valid_special_resp = [TRUE_RESP[1], FALSE_RESP[1]]
+
+    answers = ["eens", "oneens"]
+    valid_resp = ["e", "o"]
+    valid_special_resp = ["lshift", "rshift"]
+
 
     for params in stims:
         moviefn = params.filename
@@ -37,11 +39,15 @@ def run_movie_part(window, stims):
             color=BLACK,
             height=constants.DEF_FONTSIZE
             )
-        question = um.Message(
+        question = uq.Question(
             window,
-            text=questiontxt,
-            color=BLACK,
-            height=constants.DEF_FONTSIZE
+            prompt=questiontxt
+            )
+        question.set_answer_options(
+            answers,
+            valid_resp,
+            valid_special_resp,
+            answers
             )
         waitforpp.present()
 
@@ -49,28 +55,12 @@ def run_movie_part(window, stims):
             # Only skip move when it is set and running in debug mode.
             present_movie(window, moviefn)
 
-        keys, rt = question.present(
-            term_keys=valid_resp,
-            term_special_keys=valid_special_resp
+        response, rt = question.present()
+        responses[params.id] = output.MovieOutput(
+            params.id,
+            moviefn,
+            response,
+            rt
             )
 
-        if keys in TRUE_RESP:
-            responses[params.id] = output.MovieOutput(
-                params.id,
-                moviefn,
-                True,
-                rt
-                )
-        elif keys in FALSE_RESP:
-            responses[params.id] = output.MovieOutput(
-                params.id,
-                moviefn,
-                False,
-                rt
-                )
-        else:
-            raise RuntimeError(
-                "There is a bug in this experiment, please show this "
-                "to the technicians"
-                )
     return responses
