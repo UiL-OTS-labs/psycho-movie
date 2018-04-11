@@ -103,4 +103,5 @@ ENV/
 # vim temporaries
 *.sw[po]
 
-
+# ignore generated error-log.txt
+error-log.txt

@@ -8,6 +8,7 @@ from __future__ import print_function
 
 import settings
 import sys
+import os.path
 
 
 class MovieParameters(object):
@@ -85,7 +86,7 @@ def check_stimuli(print_errors=True):
     @return True if everything seems nice and dandy, otherwise False.
     TODO perhaps create a function for checking each list...
     '''
-    faulty_fns = []  # faulty filenames
+    faulty_fns = set()  # faulty filenames
 
     # check movie_stims1
     for stim in movie_stims1:
@@ -94,7 +95,7 @@ def check_stimuli(print_errors=True):
             with open(fn, 'r') as f:
                 pass
         except IOError:
-            faulty_fns.append(fn)
+            faulty_fns.add(fn)
 
     # check movie_stims2
     for stim in movie_stims2:
@@ -103,7 +104,7 @@ def check_stimuli(print_errors=True):
             with open(fn, 'r') as f:
                 pass
         except IOError:
-            faulty_fns.append(fn)
+            faulty_fns.add(fn)
 
     # check question_stims1
     for stim in question_stims1:
@@ -112,7 +113,7 @@ def check_stimuli(print_errors=True):
             with open(fn, 'r') as f:
                 pass
         except IOError:
-            faulty_fns.append(fn)
+            faulty_fns.add(fn)
 
     # check question_stims2
     for stim in question_stims2:
@@ -121,13 +122,15 @@ def check_stimuli(print_errors=True):
             with open(fn, 'r') as f:
                 pass
         except IOError:
-            faulty_fns.append(fn)
+            faulty_fns.add(fn)
 
     if print_errors:
         if faulty_fns:
             msg = "In folder \"{}\" unable to locate:".format(settings.STIMDIR)
             print(msg, file=sys.stderr)
-        for fn in filenames:
+        for fn in faulty_fns:
+            fn = os.path.basename(fn)
             msg = " - {}".format(fn)
+            print(msg, file=sys.stderr)
 
     return False if faulty_fns else True

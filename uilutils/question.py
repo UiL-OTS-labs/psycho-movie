@@ -155,7 +155,7 @@ class Question(object):
             raise ValueError("len of keys and special_keys = 0"
                              "Than there would be no way to terminate the"
                              "question.")
-        if special_keys and len(special_keys) != len(answers):
+        if special_keys and len(special_keys) != len(values):
             raise ValueError(
                 "If special_keys is specified it's length should "
                 "equal to the length of answers."
@@ -215,7 +215,7 @@ class Question(object):
                 elif key in self.special_keys:
                     stop = True
                     self.time = timestamp
-                    index = self.special_keys
+                    index = self.special_keys.index(key)
                     break
 
         if index >= 0:
