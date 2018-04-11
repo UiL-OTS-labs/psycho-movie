@@ -105,6 +105,9 @@ def run_experiment(args):
     if args.skipmovie:
         settings.SKIP_MOVIE = True
 
+    if not stimuli.check_stimuli():
+        exit("Unable to find the required stimuli.")
+
     pp_id = args.participant_id
     movie_fn, question_fn = output.get_save_file_names(group, pp_id)
     if not args.skip_fn_checks:
