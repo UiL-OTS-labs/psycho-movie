@@ -36,25 +36,34 @@ class Message(visual.TextStim):
         self.term_keys = term_keys
         self.term_special_keys = term_special_keys
         self.start_time = 0.0
+        self.end_time = 0.0
+        self.terminator = None
 
         stop = False
         while not stop:
             # Draw window inside loop because otherwise drawing artifacts occur
-            # when another overlaps the psychopy window.
+            # when another window overlaps the psychopy window.
             # The window won't be refreshed.
             self.draw()
             now = self.win.flip(True)
             if not self.start_time:
                 self.start_time = now
+                self.end_time = float('inf') if dur < 0 else now + dur
 
+            # Check whether a key terminates the message
             keys = event.getKeys(timeStamped=True)
+            # It would have been nice when psychopy returned an empty list
             if not keys:
-                continue
+                keys = [] 
             for key, timestamp in keys:
                 if key in self.term_keys or key in self.term_special_keys:
                     stop = True
                     self.time = timestamp
                     self.terminator = key
                     break
+
+            if now >= self.end_time:
+                self.time = now
+                break
 
         return self.terminator, self.time - self.start_time
