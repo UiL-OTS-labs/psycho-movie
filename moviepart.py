@@ -25,8 +25,8 @@ def run_movie_part(window, stims):
     '''
     responses = dict()
 
-    answers = ["eens", "oneens"]
-    valid_resp = ["e", "o"]
+    answers = ["waar", "onwaar"]
+    valid_resp = ["w", "o"]
     valid_special_resp = ["lshift", "rshift"]
 
 

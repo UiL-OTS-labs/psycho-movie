@@ -43,6 +43,11 @@ welcome = ("Dear participant, welcome to this experiment.\n"
            "Press the space bar to continue"
            )
 
+goodbye = ("Einde experiment.\n"
+           "\n"
+           "Bedankt voor het meedoen!"
+           )
+
 statement1 = ("The woman crashed into\n"
               "the poor bloke.")
 statement2 = ("There was a python book standing on the shelf.")

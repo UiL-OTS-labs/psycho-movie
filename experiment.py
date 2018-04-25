@@ -139,3 +139,12 @@ def run_experiment(args):
         save_movie_output(mf, manswers)
         qanswers = questionpart.run_question_part(win, questionstims, manswers)
         save_question_output(qf, qanswers)
+    
+    mesg = um.Message(
+        win,
+        text=stimuli.goodbye,
+        height=DEF_FONTSIZE * 2,
+        wrapWidth=800,
+        color=BLACK
+        )
+    mesg.present(5)
